@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2021 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,28 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.kie.kogito.traffic;
 
-package org.kie.kogito;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Arrays;
+public class Fine {
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
+    @JsonProperty("Amount")
+    private Double amount;
 
-@Path("/test")
-public class MySource {
+    @JsonProperty("Points")
+    private Integer points;
 
-    @GET
-    public Response test() {
-        return Response.ok(isRunningOnQuarkus()).build();
+    public Double getAmount() {
+        return amount;
     }
 
-    public boolean isRunningOnQuarkus() {
-        try {
-            throw new Exception("Sorry for that");
-        } catch (Exception e) {
-            return Arrays.stream(e.getStackTrace()).anyMatch(x -> x.getClassName().contains("io.quarkus"));
-        }
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 }
