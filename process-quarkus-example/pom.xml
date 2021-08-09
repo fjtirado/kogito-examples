@@ -129,12 +129,8 @@
       <dependencies>
         <dependency>
           <groupId>org.kie.kogito</groupId>
-          <artifactId>kogito-addons-quarkus-events-smallrye</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.quarkus</groupId>
-          <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
-        </dependency>
+          <artifactId>kogito-addons-quarkus-events-process</artifactId>
+        </dependency>        
       </dependencies>
     </profile>
   </profiles>
