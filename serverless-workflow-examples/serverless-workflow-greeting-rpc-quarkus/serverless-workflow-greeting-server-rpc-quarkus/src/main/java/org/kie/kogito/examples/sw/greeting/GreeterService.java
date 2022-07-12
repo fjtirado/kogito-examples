@@ -16,16 +16,22 @@
 package org.kie.kogito.examples.sw.greeting;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.kie.kogito.examples.sw.greeting.Greeting.HelloReply;
+import org.kie.kogito.examples.sw.greeting.Greeting.HelloReply.Builder;
 import org.kie.kogito.examples.sw.greeting.Greeting.HelloReply.State;
 import org.kie.kogito.examples.sw.greeting.Greeting.HelloRequest;
+import org.kie.kogito.examples.sw.greeting.Greeting.InnerMessage;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 
 public class GreeterService extends GreeterGrpc.GreeterImplBase {
+
+    private static final Logger logger = Logger.getLogger(GreeterService.class.getName());
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Server server = buildServer(Integer.getInteger("grpc.port", 50051));
@@ -49,7 +55,16 @@ public class GreeterService extends GreeterGrpc.GreeterImplBase {
             default:
                 message = "Hello from gRPC service " + request.getName();
         }
-        responseObserver.onNext(HelloReply.newBuilder().setMessage(message).setState(State.SUCCESS).build());
+        Builder builder = HelloReply.newBuilder().setMessage(message);
+        if (request.getInnerHello().getUnknown()) {
+            logger.log(Level.INFO, "unknown received");
+            builder.setState(State.UNKNOWN);
+        } else {
+            logger.log(Level.INFO, "unknown not received");
+            builder.setState(State.SUCCESS);
+        }
+        builder.setInnerMessage(InnerMessage.newBuilder().setNumber(23).build());
+        responseObserver.onNext(builder.build());
         responseObserver.onCompleted();
     }
 }

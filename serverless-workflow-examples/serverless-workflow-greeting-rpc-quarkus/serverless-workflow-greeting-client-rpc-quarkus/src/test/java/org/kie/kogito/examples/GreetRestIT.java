@@ -30,6 +30,7 @@ import io.restassured.http.ContentType;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 
 @QuarkusTest
 class GreetRestIT {
@@ -60,7 +61,8 @@ class GreetRestIT {
                 .then()
                 .statusCode(201)
                 .body("workflowdata.message", containsString("Hello"))
-                .body("workflowdata.state", is("SUCCESS"));
+                .body("workflowdata.state", is("SUCCESS"))
+                .body("workflowdata.innerMessage.number", is(23));
     }
 
     @Test
@@ -68,11 +70,12 @@ class GreetRestIT {
         given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .body("{\"workflowdata\" : {\"name\" : \"Javierito\", \"language\":\"Spanish\"}}").when()
+                .body("{\"workflowdata\" : {\"name\" : \"Javierito\", \"language\":\"Spanish\", \"unknown\":true}}").when()
                 .post("/jsongreet")
                 .then()
                 .statusCode(201)
-                .body("workflowdata.message", containsString("Saludos"));
+                .body("workflowdata.message", containsString("Saludos"))
+                .body("workflowdata.state", nullValue());
     }
 
     @Test
