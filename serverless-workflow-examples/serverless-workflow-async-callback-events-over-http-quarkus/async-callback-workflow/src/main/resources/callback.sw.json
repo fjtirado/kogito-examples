@@ -12,22 +12,12 @@
   "start": "printWaitMessage",
   "events": [
     {
-      "name": "resumeEvent",
-      "source": "",
-      "type": "resume"
-    },
-    {
       "name": "waitEvent",
       "source": "",
       "type": "wait"
     }
   ],
   "functions": [
-    {
-      "name": "printInstanceId",
-      "type": "custom",
-      "operation": "service:java:org.kie.kogito.examples.PrintService::printKogitoProcessId"
-    },
     {
       "name": "callBack",
       "type": "rest",
@@ -60,22 +50,16 @@
       "name": "waitForEvent",
       "type": "callback",
       "action": 
-        {
+       {
         "functionRef": {
           "refName": "callBack",
           "arguments": {
-            "uri": "http://localhost:8080/",
+            "uri": "http://localhost:8080/wait",
             "processInstanceId": "$WORKFLOW.instanceId"
           }
         }
       },
-      "eventRef": "waitEvent",      
-      "onErrors": [
-        {
-          "errorRef": "execution error",
-          "end": true
-        }
-      ],
+      "eventRef": "waitEvent",
       "transition": "finish"
     },
     {
@@ -83,9 +67,12 @@
       "type": "operation",
       "actions": [
         {
-          "name": "printInstanceId",
+          "name": "printAfterEvent",
           "functionRef": {
-            "refName": "printInstanceId"
+            "refName": "printMessage",
+            "arguments": {
+              "message": ".message"
+            }
           }
         }
       ],

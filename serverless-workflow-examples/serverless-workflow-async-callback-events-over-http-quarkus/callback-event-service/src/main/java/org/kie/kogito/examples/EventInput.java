@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Red Hat, Inc. and/or its affiliates.
+ * Copyright 2022 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,7 @@
  */
 package org.kie.kogito.examples;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.io.Serializable;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class EventInput implements Serializable {
+public class EventInput {
 
     private String uri;
     private String processInstanceId;
@@ -27,26 +23,13 @@ public class EventInput implements Serializable {
     public EventInput() {
     }
 
-    public EventInput(String uri,String processInstanceId) {
-        this.uri = uri;
-        this.processInstanceId = processInstanceId;
-    }
-
-    public String getUri() {
+     public String getUri() {
         return uri;
     }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
     public String getProcessInstanceId() {
         return processInstanceId;
     }
 
-    public void setProcessInstanceId(String processInstanceId) {
-        this.processInstanceId = processInstanceId;
-    }
     @Override
     public String toString() {
         return "EventInput{" +
